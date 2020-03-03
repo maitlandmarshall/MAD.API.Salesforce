@@ -1,7 +1,5 @@
-using MaitlandsInterfaceFramework.Core.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Salesforce.Force;
 using System.IO;
 using System.Linq;
@@ -27,7 +25,7 @@ namespace MAD.API.Salesforce.Tests
             public string Description { get; set; }
         }
 
-        ForceClient client;
+        private ForceClient client;
 
         [TestInitialize]
         public async Task Initialize()
@@ -36,13 +34,13 @@ namespace MAD.API.Salesforce.Tests
 
             if (string.IsNullOrEmpty(config.SalesforceRefreshToken))
             {
-                client = await new SalesforceApiFactory().GetApiClientWithRefreshToken(config.SalesforceConsumerKey, config.SalesforceConsumerSecret, config.SalesforceRefreshToken);
+                this.client = await new SalesforceApiFactory().GetApiClientWithRefreshToken(config.SalesforceConsumerKey, config.SalesforceConsumerSecret, config.SalesforceRefreshToken);
             }
             else
             {
-                client = await new SalesforceApiFactory().GetApiClientWithAccessToken(config.SalesforceConsumerKey, config.SalesforceConsumerSecret, config.SalesforceAccessToken);
+                this.client = await new SalesforceApiFactory().GetApiClientWithAccessToken(config.SalesforceConsumerKey, config.SalesforceConsumerSecret, config.SalesforceAccessToken);
             }
-            
+
         }
 
         [TestMethod]
@@ -50,7 +48,7 @@ namespace MAD.API.Salesforce.Tests
         {
             SalesforceApiFactory factory = new SalesforceApiFactory();
 
-            var accountResult = await this.client.QueryAsync<Account>("SELECT Id, Name, Description FROM Account");
+            global::Salesforce.Common.Models.Json.QueryResult<Account> accountResult = await this.client.QueryAsync<Account>("SELECT Id, Name, Description FROM Account");
 
             Assert.IsTrue(accountResult.Records.Any());
         }
