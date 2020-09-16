@@ -2,62 +2,79 @@
 using Salesforce.Force;
 using System;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MAD.API.Salesforce
 {
     public class SalesforceApiFactory
     {
-        public Task<ForceClient> GetApiClientWithAccessToken(string consumerKey, string consumerSecret, string accessToken)
+        public class SalesforceApiOptions
         {
-            if (string.IsNullOrEmpty(consumerKey))
-                throw new ArgumentException("Must have a value.", nameof(consumerKey));
-
-            if (string.IsNullOrEmpty(consumerSecret))
-                throw new ArgumentException("Must have a value.", nameof(consumerSecret));
-
-            if (string.IsNullOrEmpty(accessToken))
-                throw new ArgumentException("Must have a value.", nameof(accessToken));
-
-            return this.GetApiClient(consumerKey, consumerSecret, accessToken, null);
+            public string ConsumerKey { get; set; }
+            public string ConsumerSecret { get; set; }
+            public string InstanceEndpoint { get; set; } = "https://ap16.salesforce.com";
+            public string AuthEndpoint { get; set; }
         }
 
-        public Task<ForceClient> GetApiClientWithRefreshToken(string consumerKey, string consumerSecret, string refreshToken)
+        public ForceClient GetApiClientWithAccessToken(SalesforceApiOptions options, string accessToken)
         {
-            if (string.IsNullOrEmpty(consumerKey))
-                throw new ArgumentException("Must have a value.", nameof(consumerKey));
+            using AuthenticationClient auth = this.CreateAuthenticationClient(options.InstanceEndpoint);
+            auth.AccessToken = accessToken;
 
-            if (string.IsNullOrEmpty(consumerSecret))
-                throw new ArgumentException("Must have a value.", nameof(consumerSecret));
-
-            if (string.IsNullOrEmpty(refreshToken))
-                throw new ArgumentException("Must have a value.", nameof(refreshToken));
-
-            return this.GetApiClient(consumerKey, consumerSecret, null, refreshToken);
+            return this.CreateForceClient(auth);
         }
 
-        private async Task<ForceClient> GetApiClient (string consumerKey, string consumerSecret, string accessToken, string refreshToken)
+        public async Task<ForceClient> GetApiClientWithRefreshToken(SalesforceApiOptions options, string refreshToken)
         {
-            using AuthenticationClient auth = new AuthenticationClient
+            using AuthenticationClient auth = this.CreateAuthenticationClient(options.InstanceEndpoint);
+
+            if (!string.IsNullOrEmpty(options.AuthEndpoint))
             {
-                InstanceUrl = "https://ap16.salesforce.com",
-                AccessToken = accessToken
+                await auth.TokenRefreshAsync(options.ConsumerKey, refreshToken, options.ConsumerSecret, options.InstanceEndpoint);
+            }
+            else
+            {
+                await auth.TokenRefreshAsync(options.ConsumerKey, refreshToken, options.ConsumerSecret);
+            }
+
+            return this.CreateForceClient(auth);
+        }
+
+        public async Task<ForceClient> CreateApiClient(SalesforceApiOptions options, string username, string password)
+        {
+            using var auth = this.CreateAuthenticationClient(options.InstanceEndpoint);
+
+            if (!string.IsNullOrEmpty(options.AuthEndpoint))
+            {
+                await auth.UsernamePasswordAsync(options.ConsumerKey, options.ConsumerSecret, username, password, options.AuthEndpoint);
+            }
+            else
+            {
+                await auth.UsernamePasswordAsync(options.ConsumerKey, options.ConsumerSecret, username, password);
+            }
+
+            // await auth.WebServerAsync(consumerKey, consumerSecret, "http://localhost:666/api/SalesforceOAuth/callback", "aPrx8euw8KQvhFGQXnYE6WJkKcZ.KVAtN6oBCpiZ3K3wmsqJ9jCbum47uHRsHETmVGM5OjDMAg==", "https://test.salesforce.com/services/oauth2/token");
+
+            return this.CreateForceClient(auth);
+        }
+
+        private AuthenticationClient CreateAuthenticationClient(string instanceUrl = null)
+        {
+            return new AuthenticationClient
+            {
+                InstanceUrl = instanceUrl
             };
+        }
 
-            if (!String.IsNullOrEmpty(refreshToken))
-                await auth.TokenRefreshAsync(consumerKey, refreshToken, consumerSecret);
+        private ForceClient CreateForceClient(AuthenticationClient auth)
+        {
+            var client = new ForceClient(auth.InstanceUrl, auth.AccessToken, auth.ApiVersion);
+            var jsonHttpClientField = client.GetType().GetField("_jsonHttpClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            var jsonHttpClient = jsonHttpClientField.GetValue(client) as JsonHttpClient;
+            var httpClientField = jsonHttpClient.GetType().GetField("HttpClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            var httpClient = httpClientField.GetValue(jsonHttpClient) as HttpClient;
+            var handler = typeof(HttpMessageInvoker).GetField("_handler", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(httpClient) as HttpClientHandler;
 
-            ForceClient client = new ForceClient(auth.InstanceUrl, auth.AccessToken, auth.ApiVersion);
-            FieldInfo jsonHttpClientField = client.GetType().GetField("_jsonHttpClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-
-            JsonHttpClient jsonHttpClient = jsonHttpClientField.GetValue(client) as JsonHttpClient;
-
-            FieldInfo httpClientField = jsonHttpClient.GetType().GetField("HttpClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-
-            HttpClient httpClient = httpClientField.GetValue(jsonHttpClient) as HttpClient;
-
-            HttpClientHandler handler = typeof(HttpMessageInvoker).GetField("_handler", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(httpClient) as HttpClientHandler;
             handler.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate | System.Net.DecompressionMethods.None;
 
             return client;
