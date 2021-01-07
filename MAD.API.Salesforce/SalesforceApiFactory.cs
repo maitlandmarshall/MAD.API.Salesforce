@@ -30,7 +30,7 @@ namespace MAD.API.Salesforce
 
             if (!string.IsNullOrEmpty(options.AuthEndpoint))
             {
-                await auth.TokenRefreshAsync(options.ConsumerKey, refreshToken, options.ConsumerSecret, options.InstanceEndpoint);
+                await auth.TokenRefreshAsync(options.ConsumerKey, refreshToken, options.ConsumerSecret, options.AuthEndpoint);
             }
             else
             {
@@ -69,10 +69,7 @@ namespace MAD.API.Salesforce
         private ForceClient CreateForceClient(AuthenticationClient auth)
         {
             var client = new ForceClient(auth.InstanceUrl, auth.AccessToken, auth.ApiVersion);
-            var jsonHttpClientField = client.GetType().GetField("_jsonHttpClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var jsonHttpClient = jsonHttpClientField.GetValue(client) as JsonHttpClient;
-            var httpClientField = jsonHttpClient.GetType().GetField("HttpClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            var httpClient = httpClientField.GetValue(jsonHttpClient) as HttpClient;
+            var httpClient = client.GetHttpClient();
             var handler = typeof(HttpMessageInvoker).GetField("_handler", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(httpClient) as HttpClientHandler;
 
             handler.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate | System.Net.DecompressionMethods.None;
