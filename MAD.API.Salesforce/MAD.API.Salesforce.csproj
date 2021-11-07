@@ -2,6 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>Maitland Marshall</Authors>
+    <Company>MAIT DEV</Company>
+    <PackageProjectUrl>https://github.com/maitlandmarshall/MAD.API.Salesforce</PackageProjectUrl>
+
+    <Major>1</Major>
+    <Minor>0</Minor>
+    <Build>0</Build>
+    <Revision>$([System.DateTime]::UtcNow.ToString("yyMMddHHmm"))</Revision>
+
+    <Version>$(Major).$(Minor).$(Build).$(Revision)</Version>
+    <AssemblyVersion>$(Major).$(Minor).$(Build)</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
