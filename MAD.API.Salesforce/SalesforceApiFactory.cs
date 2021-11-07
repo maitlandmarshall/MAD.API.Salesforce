@@ -60,7 +60,7 @@ namespace MAD.API.Salesforce
 
         private AuthenticationClient CreateAuthenticationClient(string instanceUrl = null)
         {
-            return new AuthenticationClient
+            return new AuthenticationClient(apiVersion: "v50.0")
             {
                 InstanceUrl = instanceUrl
             };
