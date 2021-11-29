@@ -11,12 +11,13 @@ namespace MAD.API.Salesforce.CodeGenerator.Tests
     public class ModelGeneratorTests
     {
         [DataTestMethod()]
-        [DataRow("Survey")]
-        [DataRow("SurveyResponse")]
-        [DataRow("SurveyQuestion")]
-        [DataRow("SurveyQuestionChoice")]
-        [DataRow("SurveyQuestionScore")]
-        [DataRow("SurveyQuestionResponse")]
+        //[DataRow("Survey")]
+        [DataRow("SurveySubject")]
+        //[DataRow("SurveyResponse")]
+        //[DataRow("SurveyQuestion")]
+        //[DataRow("SurveyQuestionChoice")]
+        //[DataRow("SurveyQuestionScore")]
+        //[DataRow("SurveyQuestionResponse")]
         public async Task Generate_AndWriteToFileSystem(string entityName)
         {
             var sp = this.GetServiceProvider();
