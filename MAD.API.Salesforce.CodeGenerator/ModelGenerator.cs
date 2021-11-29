@@ -20,7 +20,8 @@ namespace MAD.API.Salesforce.CodeGenerator
             var describe = await this.forceClient.DescribeAsync<DescribeResponse>(entityName);
             var classModel = new ClassModel(entityName)
             {
-                AccessModifier = CsCodeGenerator.Enums.AccessModifier.Public
+                AccessModifier = CsCodeGenerator.Enums.AccessModifier.Public,
+                Interfaces = { "ISalesforceEntity" }
             };
 
             foreach (var f in describe.Fields)
