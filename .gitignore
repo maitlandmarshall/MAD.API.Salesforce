@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /MAD.API.Salesforce.Tests/ApiKey.txt
+/MAD.API.Salesforce.CodeGenerator.Tests/testsettings.Local.json

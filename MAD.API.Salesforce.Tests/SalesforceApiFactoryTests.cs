@@ -34,11 +34,19 @@ namespace MAD.API.Salesforce.Tests
 
             if (string.IsNullOrEmpty(config.SalesforceRefreshToken))
             {
-                this.client = await new SalesforceApiFactory().GetApiClientWithRefreshToken(config.SalesforceConsumerKey, config.SalesforceConsumerSecret, config.SalesforceRefreshToken);
+                this.client = await new SalesforceApiFactory().GetApiClientWithRefreshToken(new SalesforceApiFactory.SalesforceApiOptions
+                {
+                    ConsumerKey = config.SalesforceConsumerKey,
+                    ConsumerSecret = config.SalesforceConsumerSecret,
+                }, config.SalesforceRefreshToken);
             }
             else
             {
-                this.client = await new SalesforceApiFactory().GetApiClientWithAccessToken(config.SalesforceConsumerKey, config.SalesforceConsumerSecret, config.SalesforceAccessToken);
+                this.client = new SalesforceApiFactory().GetApiClientWithAccessToken(new SalesforceApiFactory.SalesforceApiOptions
+                {
+                    ConsumerKey = config.SalesforceConsumerKey,
+                    ConsumerSecret = config.SalesforceConsumerSecret,
+                }, config.SalesforceAccessToken);
             }
 
         }

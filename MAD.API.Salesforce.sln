@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAD.API.Salesforce", "MAD.API.Salesforce\MAD.API.Salesforce.csproj", "{A17406B6-3A76-47AE-B289-FF67A862E3F2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAD.API.Salesforce.Tests", "MAD.API.Salesforce.Tests\MAD.API.Salesforce.Tests.csproj", "{F9E82A8F-3EB6-4FA0-A7F6-9610886C8AE8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{80C2B848-8450-4362-A177-773EA06CC77E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{53438797-1C62-4999-857B-60C22DF89B71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAD.API.Salesforce.CodeGenerator", "MAD.API.Salesforce.CodeGenerator\MAD.API.Salesforce.CodeGenerator.csproj", "{CBE664B9-5032-4818-BF2A-2434401FD41D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAD.API.Salesforce.CodeGenerator.Tests", "MAD.API.Salesforce.CodeGenerator.Tests\MAD.API.Salesforce.CodeGenerator.Tests.csproj", "{26BB1389-5D3E-4035-9CFD-72C87971A561}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +29,22 @@ Global
 		{F9E82A8F-3EB6-4FA0-A7F6-9610886C8AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9E82A8F-3EB6-4FA0-A7F6-9610886C8AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9E82A8F-3EB6-4FA0-A7F6-9610886C8AE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE664B9-5032-4818-BF2A-2434401FD41D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE664B9-5032-4818-BF2A-2434401FD41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE664B9-5032-4818-BF2A-2434401FD41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE664B9-5032-4818-BF2A-2434401FD41D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BB1389-5D3E-4035-9CFD-72C87971A561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26BB1389-5D3E-4035-9CFD-72C87971A561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26BB1389-5D3E-4035-9CFD-72C87971A561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BB1389-5D3E-4035-9CFD-72C87971A561}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F9E82A8F-3EB6-4FA0-A7F6-9610886C8AE8} = {80C2B848-8450-4362-A177-773EA06CC77E}
+		{CBE664B9-5032-4818-BF2A-2434401FD41D} = {53438797-1C62-4999-857B-60C22DF89B71}
+		{26BB1389-5D3E-4035-9CFD-72C87971A561} = {53438797-1C62-4999-857B-60C22DF89B71}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95F6EDA2-3C27-487F-9722-EE89D18EF881}
