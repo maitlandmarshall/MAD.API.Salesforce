@@ -12,7 +12,7 @@ namespace MAD.API.Salesforce.CodeGenerator.Tests
     {
         [DataTestMethod()]
         //[DataRow("Survey")]
-        [DataRow("SurveySubject")]
+        [DataRow("SurveyVersion")]
         //[DataRow("SurveyResponse")]
         //[DataRow("SurveyQuestion")]
         //[DataRow("SurveyQuestionChoice")]
