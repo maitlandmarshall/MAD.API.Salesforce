@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
 
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Authors>Maitland Marshall</Authors>
-    <Company>MAIT DEV</Company>
-    <PackageProjectUrl>https://github.com/maitlandmarshall/MAD.API.Salesforce</PackageProjectUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Authors>Maitland Marshall</Authors>
+		<Company>MAIT DEV</Company>
+		<PackageProjectUrl>https://github.com/maitlandmarshall/MAD.API.Salesforce</PackageProjectUrl>
 
-    <Major>1</Major>
-    <Minor>0</Minor>
-    <Build>1</Build>
-    <Revision>$([System.DateTime]::UtcNow.ToString("yyMMddHHmm"))</Revision>
+		<Major>1</Major>
+		<Minor>0</Minor>
+		<Build>1</Build>
+		<Revision>$([System.DateTime]::UtcNow.ToString("MddHHmmss"))</Revision>
 
-    <Version>$(Major).$(Minor).$(Build).$(Revision)</Version>
-    <AssemblyVersion>$(Major).$(Minor).$(Build)</AssemblyVersion>
-  </PropertyGroup>
+		<Version>$(Major).$(Minor).$(Build).$(Revision)</Version>
+		<AssemblyVersion>$(Major).$(Minor).$(Build)</AssemblyVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DeveloperForce.Force" Version="2.1.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DeveloperForce.Force" Version="2.1.0" />
+	</ItemGroup>
 
 
 </Project>

@@ -12,7 +12,7 @@ namespace MAD.API.Salesforce
         {
             public string ConsumerKey { get; set; }
             public string ConsumerSecret { get; set; }
-            public string InstanceEndpoint { get; set; } = "https://ap16.salesforce.com";
+            public string InstanceEndpoint { get; set; }
             public string AuthEndpoint { get; set; }
         }
 
