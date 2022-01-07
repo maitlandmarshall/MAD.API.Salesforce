@@ -13,10 +13,10 @@ namespace MAD.API.Salesforce.CodeGenerator
             serviceDescriptors.AddTransient<SalesforceConfig>(svc => svc.GetRequiredService<IOptions<SalesforceConfig>>().Value);
 
             serviceDescriptors.AddTransient<ModelGenerator>();
-            serviceDescriptors.AddTransient<IForceClient>(svc =>
+            serviceDescriptors.AddTransient<SalesforceApiClient>(svc =>
             {
                 var options = svc.GetRequiredService<SalesforceConfig>();
-                return new SalesforceApiFactory().CreateApiClient(new SalesforceApiFactory.SalesforceApiOptions
+                return new SalesforceApiClientFactory().CreateApiClient(new SalesforceApiClientFactory.SalesforceApiOptions
                 {
                     ConsumerKey = options.ConsumerKey,
                     ConsumerSecret = options.ConsumerSecret
