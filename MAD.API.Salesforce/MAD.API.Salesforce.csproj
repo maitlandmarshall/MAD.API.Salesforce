@@ -8,9 +8,9 @@
 		<Company>MAIT DEV</Company>
 		<PackageProjectUrl>https://github.com/maitlandmarshall/MAD.API.Salesforce</PackageProjectUrl>
 
-		<Major>1</Major>
+		<Major>2</Major>
 		<Minor>0</Minor>
-		<Build>2</Build>
+		<Build>0</Build>
 		<Revision>$([System.DateTime]::UtcNow.ToString("MddHHmmss"))</Revision>
 
 		<Version>$(Major).$(Minor).$(Build).$(Revision)</Version>

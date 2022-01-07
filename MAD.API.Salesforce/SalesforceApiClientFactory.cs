@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MAD.API.Salesforce
 {
-    public class SalesforceApiFactory
+    public class SalesforceApiClientFactory
     {
         public class SalesforceApiOptions
         {
@@ -16,15 +16,15 @@ namespace MAD.API.Salesforce
             public string AuthEndpoint { get; set; }
         }
 
-        public ForceClient GetApiClientWithAccessToken(SalesforceApiOptions options, string accessToken)
+        public SalesforceApiClient GetApiClientWithAccessToken(SalesforceApiOptions options, string accessToken)
         {
             using AuthenticationClient auth = this.CreateAuthenticationClient(options.InstanceEndpoint);
             auth.AccessToken = accessToken;
-
-            return this.CreateForceClient(auth);
+            
+            return this.CreateSalesforceClient(auth);
         }
 
-        public async Task<ForceClient> GetApiClientWithRefreshToken(SalesforceApiOptions options, string refreshToken)
+        public async Task<SalesforceApiClient> GetApiClientWithRefreshToken(SalesforceApiOptions options, string refreshToken)
         {
             using AuthenticationClient auth = this.CreateAuthenticationClient(options.InstanceEndpoint);
 
@@ -37,10 +37,10 @@ namespace MAD.API.Salesforce
                 await auth.TokenRefreshAsync(options.ConsumerKey, refreshToken, options.ConsumerSecret);
             }
 
-            return this.CreateForceClient(auth);
+            return this.CreateSalesforceClient(auth);
         }
 
-        public async Task<ForceClient> CreateApiClient(SalesforceApiOptions options, string username, string password)
+        public async Task<SalesforceApiClient> CreateApiClient(SalesforceApiOptions options, string username, string password)
         {
             using var auth = this.CreateAuthenticationClient(options.InstanceEndpoint);
 
@@ -54,11 +54,11 @@ namespace MAD.API.Salesforce
             }
 
             // await auth.WebServerAsync(consumerKey, consumerSecret, "http://localhost:666/api/SalesforceOAuth/callback", "aPrx8euw8KQvhFGQXnYE6WJkKcZ.KVAtN6oBCpiZ3K3wmsqJ9jCbum47uHRsHETmVGM5OjDMAg==", "https://test.salesforce.com/services/oauth2/token");
-
-            return this.CreateForceClient(auth);
+            
+            return this.CreateSalesforceClient(auth);            
         }
 
-        private AuthenticationClient CreateAuthenticationClient(string instanceUrl = null)
+        public AuthenticationClient CreateAuthenticationClient(string instanceUrl = null)
         {
             return new AuthenticationClient(apiVersion: "v50.0")
             {
@@ -66,7 +66,7 @@ namespace MAD.API.Salesforce
             };
         }
 
-        private ForceClient CreateForceClient(AuthenticationClient auth)
+        private ForceClient CreateApiClient(AuthenticationClient auth)
         {
             var client = new ForceClient(auth.InstanceUrl, auth.AccessToken, auth.ApiVersion);
             var httpClient = client.GetHttpClient();
@@ -75,6 +75,19 @@ namespace MAD.API.Salesforce
             handler.AutomaticDecompression = System.Net.DecompressionMethods.GZip | System.Net.DecompressionMethods.Deflate | System.Net.DecompressionMethods.None;
 
             return client;
+        }
+
+        private SalesforceApiClient CreateSalesforceClient(AuthenticationClient authClient)
+        {           
+            return new SalesforceApiClient
+            {
+                Api = this.CreateApiClient(authClient),
+                AccessToken = authClient.AccessToken,
+                ApiVersion = authClient.ApiVersion,
+                Id = authClient.Id,
+                InstanceUrl = authClient.InstanceUrl,
+                RefreshToken = authClient.RefreshToken
+            };
         }
     }
 }
