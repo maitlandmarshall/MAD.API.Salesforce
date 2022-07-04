@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
@@ -10,8 +10,8 @@
 
 		<Major>2</Major>
 		<Minor>0</Minor>
-		<Build>0</Build>
-		<Revision>$([System.DateTime]::UtcNow.ToString("MddHHmmss"))</Revision>
+		<Build>1</Build>
+		<Revision>$([System.DateTime]::UtcNow.ToString("MddHHmm"))</Revision>
 
 		<Version>$(Major).$(Minor).$(Build).$(Revision)</Version>
 		<AssemblyVersion>$(Major).$(Minor).$(Build)</AssemblyVersion>

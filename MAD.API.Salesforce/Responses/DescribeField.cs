@@ -8,5 +8,7 @@
         public bool Custom { get; set; }
 
         public string Type { get; set; }
+
+        public bool Calculated { get; set; }
     }
 }
